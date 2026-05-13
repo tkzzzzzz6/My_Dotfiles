@@ -39,7 +39,7 @@ elif [ "$OS" = "Linux" ]; then
                 PKG_INSTALL="sudo apt install -y"
                 info "检测到 Debian/Ubuntu 系统: $PRETTY_NAME"
                 ;;
-            arch|manjaro|endeavouros)
+            arch|manjaro|endeavouros|cachyos)
                 DISTRO="arch"
                 PKG_INSTALL="yay -S --noconfirm"
                 info "检测到 Arch Linux 系统: $PRETTY_NAME"
