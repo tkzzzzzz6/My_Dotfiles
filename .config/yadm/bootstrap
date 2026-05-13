@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# yadm bootstrap - 新机器初始化脚本
+# yadm bootstrap - 新机器初始化脚本（支持 macOS 和 Linux）
 # 用法：克隆 dotfiles 后运行 yadm bootstrap
 #
 set -e
@@ -13,6 +13,23 @@ NC='\033[0m'
 info()  { echo -e "${GREEN}[✓]${NC} $1"; }
 warn()  { echo -e "${YELLOW}[!]${NC} $1"; }
 error() { echo -e "${RED}[✗]${NC} $1"; }
+
+# ============================================================
+# 检测操作系统
+# ============================================================
+OS="$(uname -s)"
+IS_MACOS=false
+IS_LINUX=false
+if [ "$OS" = "Darwin" ]; then
+    IS_MACOS=true
+    info "检测到 macOS 系统"
+elif [ "$OS" = "Linux" ]; then
+    IS_LINUX=true
+    info "检测到 Linux 系统"
+else
+    error "不支持的操作系统: $OS"
+    exit 1
+fi
 
 # ============================================================
 # 0. Homebrew 中国镜像源（必须在所有 brew 操作之前）
@@ -52,7 +69,14 @@ info "已配置 uv 清华镜像源"
 if ! command -v brew &>/dev/null; then
     info "安装 Homebrew..."
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-    eval "$(/opt/homebrew/bin/brew shellenv)"
+    # 根据系统设置 brew shellenv
+    if [ -f /opt/homebrew/bin/brew ]; then
+        eval "$(/opt/homebrew/bin/brew shellenv)"
+    elif [ -f /home/linuxbrew/.linuxbrew/bin/brew ]; then
+        eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+    elif [ -f /usr/local/bin/brew ]; then
+        eval "$(/usr/local/bin/brew shellenv)"
+    fi
 else
     info "Homebrew 已安装，跳过"
 fi
@@ -88,26 +112,31 @@ for pkg in "${BREW_PACKAGES[@]}"; do
 done
 
 # ============================================================
-# 3. Homebrew Cask（GUI 应用）
+# 3. Homebrew Cask（仅 macOS）
 # ============================================================
-BREW_CASKS=(
-    ghostty     # 终端模拟器
-)
+if $IS_MACOS; then
+    BREW_CASKS=(
+        ghostty     # 终端模拟器
+    )
 
-info "安装 GUI 应用..."
-for cask in "${BREW_CASKS[@]}"; do
-    if brew list --cask "$cask" &>/dev/null; then
-        info "  $cask 已安装"
-    else
-        warn "  安装 $cask..."
-        brew install --cask "$cask"
-    fi
-done
+    info "安装 macOS 应用..."
+    for cask in "${BREW_CASKS[@]}"; do
+        if brew list --cask "$cask" &>/dev/null; then
+            info "  $cask 已安装"
+        else
+            warn "  安装 $cask..."
+            brew install --cask "$cask"
+        fi
+    done
+else
+    info "跳过 macOS 专属应用（Ghostty 等）"
+fi
 
 # ============================================================
 # 4. Oh My Zsh
 # ============================================================
-if [ ! -d "$HOME/.oh-my-zsh" ]; then info "安装 Oh My Zsh..."
+if [ ! -d "$HOME/.oh-my-zsh" ]; then
+    info "安装 Oh My Zsh..."
     sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
 else
     info "Oh My Zsh 已安装"
@@ -137,7 +166,7 @@ else
 fi
 
 # ============================================================
-# 6. Node.js（通过 nvm 或直接安装）
+# 6. Node.js
 # ============================================================
 if ! command -v node &>/dev/null; then
     info "安装 Node.js..."
@@ -161,7 +190,9 @@ fi
 # ============================================================
 if command -v fzf &>/dev/null; then
     info "配置 fzf 快捷键和补全..."
-    "$(brew --prefix)/opt/fzf/install" --all --no-bash --no-fish 2>/dev/null || true
+    # 自动检测 fzf 安装路径
+    FZF_PREFIX="$(brew --prefix 2>/dev/null || echo /usr)"
+    "$FZF_PREFIX/opt/fzf/install" --all --no-bash --no-fish 2>/dev/null || true
 fi
 
 # ============================================================
@@ -226,8 +257,12 @@ echo -e "${GREEN}========================================${NC}"
 echo -e "${GREEN}  Bootstrap 完成！${NC}"
 echo -e "${GREEN}========================================${NC}"
 echo ""
+echo "系统: $OS"
+echo ""
 echo "可能还需要手动操作："
 echo "  1. gh auth login          — 登录 GitHub"
 echo "  2. ssh-keygen             — 生成 SSH 密钥"
+if $IS_MACOS; then
 echo "  3. 打开 Ghostty/iTerm2    — 配置终端外观"
+fi
 echo ""
