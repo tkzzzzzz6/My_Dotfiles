@@ -25,6 +25,28 @@ export HOMEBREW_CASK_GIT_REMOTE=https://mirrors.aliyun.com/homebrew/homebrew-cas
 info "已配置 Homebrew 阿里云镜像源"
 
 # ============================================================
+# 0.1 其他工具的中国镜像源
+# ============================================================
+# npm 淘宝镜像
+if command -v npm &>/dev/null; then
+    npm config set registry https://registry.npmmirror.com
+    info "已配置 npm 淘宝镜像源"
+fi
+
+# Go 模块代理（七牛）
+if command -v go &>/dev/null; then
+    go env -w GOPROXY=https://goproxy.cn,direct
+    info "已配置 Go 七牛镜像源"
+fi
+
+# uv（pip）清华镜像
+mkdir -p "$HOME/.config/uv"
+cat > "$HOME/.config/uv/uv.toml" << 'UV_EOF'
+default-index = "https://pypi.tuna.tsinghua.edu.cn/simple"
+UV_EOF
+info "已配置 uv 清华镜像源"
+
+# ============================================================
 # 1. Homebrew
 # ============================================================
 if ! command -v brew &>/dev/null; then
