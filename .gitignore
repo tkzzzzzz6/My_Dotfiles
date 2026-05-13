@@ -6,6 +6,10 @@
 # GitHub CLI 安全文件
 .config/gh/hosts.yml.bak
 
+# Code-Stats 密钥
+.config/code-stats/secrets.env
+.config/code-stats/config.toml
+
 # Neovim 临时文件
 .config/nvim/.git
 .config/nvim/.tests

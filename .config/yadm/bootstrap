@@ -144,7 +144,29 @@ else
 fi
 
 # ============================================================
-# 10. SSH 密钥检查
+# 10. Code-Stats 配置
+# ============================================================
+if [ ! -f "$HOME/.config/code-stats/config.toml" ]; then
+    if [ -f "$HOME/.config/code-stats/secrets.env" ]; then
+        info "从 secrets.env 生成 code-stats 配置..."
+        source "$HOME/.config/code-stats/secrets.env"
+        cat > "$HOME/.config/code-stats/config.toml" <<EOF
+api_token = "$CODESTATS_API_KEY"
+EOF
+    else
+        warn "未找到 code-stats 密钥，请手动配置："
+        echo "  1. 访问 https://codestats.net 获取 API key"
+        echo "  2. 创建 ~/.config/code-stats/secrets.env："
+        echo "     CODESTATS_API_KEY=your_key_here"
+        echo "  3. 创建 ~/.config/code-stats/config.toml："
+        echo "     api_token = \"your_key_here\""
+    fi
+else
+    info "code-stats 配置已存在"
+fi
+
+# ============================================================
+# 11. SSH 密钥检查
 # ============================================================
 if [ ! -f "$HOME/.ssh/id_ed25519" ]; then
     warn "未找到 SSH 密钥，请手动生成："
@@ -155,7 +177,7 @@ else
 fi
 
 # ============================================================
-# 11. GitHub CLI 认证
+# 12. GitHub CLI 认证
 # ============================================================
 if ! gh auth status &>/dev/null; then
     warn "GitHub CLI 未登录，请运行："
@@ -176,5 +198,4 @@ echo "可能还需要手动操作："
 echo "  1. gh auth login          — 登录 GitHub"
 echo "  2. ssh-keygen             — 生成 SSH 密钥"
 echo "  3. 打开 Ghostty/iTerm2    — 配置终端外观"
-echo "  4. code-stats 配置        — 检查 API key"
 echo ""
