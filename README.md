@@ -15,16 +15,16 @@ yadm bootstrap
 
 ## 包含的配置
 
-| 类别 | 文件 | 说明 |
-|------|------|------|
-| Shell | `.zshrc` | Zsh 主配置 |
-| Shell | `.bashrc` | Bash 配置 |
-| Git | `.gitconfig` | Git 全局配置 |
-| Editor | `.config/nvim/` | Neovim (LazyVim) 配置 |
-| Editor | `.config/zed/` | Zed 编辑器配置 |
-| Terminal | `.config/btop/` | btop 系统监控配置 |
-| CLI | `.config/gh/` | GitHub CLI 配置 |
-| SSH | `.ssh/config` | SSH 连接配置 |
+| 类别     | 文件            | 说明                  |
+| -------- | --------------- | --------------------- |
+| Shell    | `.zshrc`        | Zsh 主配置            |
+| Shell    | `.bashrc`       | Bash 配置             |
+| Git      | `.gitconfig`    | Git 全局配置          |
+| Editor   | `.config/nvim/` | Neovim (LazyVim) 配置 |
+| Editor   | `.config/zed/`  | Zed 编辑器配置        |
+| Terminal | `.config/btop/` | btop 系统监控配置     |
+| CLI      | `.config/gh/`   | GitHub CLI 配置       |
+| SSH      | `.ssh/config`   | SSH 连接配置          |
 
 ## 常用命令
 

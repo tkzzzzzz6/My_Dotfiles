@@ -129,9 +129,9 @@ is_installed() {
 }
 
 # ============================================================
-# 2. Homebrew（macOS 必需，Linux 可选）
+# 2. Homebrew（仅 macOS）
 # ============================================================
-if [ "$DISTRO" = "macos" ] || [ "$DISTRO" = "unknown" ]; then
+if $IS_MACOS; then
     if ! is_installed brew; then
         info "安装 Homebrew..."
         /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
@@ -145,6 +145,8 @@ if [ "$DISTRO" = "macos" ] || [ "$DISTRO" = "unknown" ]; then
     else
         info "Homebrew 已安装"
     fi
+elif [ "$DISTRO" = "unknown" ]; then
+    warn "未知发行版，跳过 Homebrew。请手动安装所需工具。"
 fi
 
 # ============================================================
@@ -341,10 +343,7 @@ if is_installed fzf; then
     if $IS_MACOS; then
         "$(brew --prefix)/opt/fzf/install" --all --no-bash --no-fish 2>/dev/null || true
     else
-        # Linux 上 fzf 通常由包管理器自动配置
-        if [ -f /usr/share/doc/fzf/examples/key-bindings.zsh ]; then
-            info "  fzf 键绑定已由包管理器配置"
-        fi
+        info "  fzf 键绑定已由包管理器配置"
     fi
 fi
 

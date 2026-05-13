@@ -11,7 +11,6 @@
 .config/code-stats/config.toml
 
 # Neovim 临时文件
-.config/nvim/.git
 .config/nvim/.tests
 .config/nvim/doc/tags
 .config/nvim/debug
