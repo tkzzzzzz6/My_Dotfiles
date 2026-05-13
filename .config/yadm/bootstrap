@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# yadm bootstrap - 新机器初始化脚本（支持 macOS 和 Linux）
+# yadm bootstrap - 新机器初始化脚本（支持 macOS / Debian / Arch / Fedora）
 # 用法：克隆 dotfiles 后运行 yadm bootstrap
 #
 set -e
@@ -15,35 +15,66 @@ warn()  { echo -e "${YELLOW}[!]${NC} $1"; }
 error() { echo -e "${RED}[✗]${NC} $1"; }
 
 # ============================================================
-# 检测操作系统
+# 检测操作系统和发行版
 # ============================================================
 OS="$(uname -s)"
 IS_MACOS=false
 IS_LINUX=false
+DISTRO=""       # debian / arch / fedora / unknown
+PKG_INSTALL=""  # 包管理器安装命令
+
 if [ "$OS" = "Darwin" ]; then
     IS_MACOS=true
+    DISTRO="macos"
     info "检测到 macOS 系统"
+
 elif [ "$OS" = "Linux" ]; then
     IS_LINUX=true
-    info "检测到 Linux 系统"
+
+    if [ -f /etc/os-release ]; then
+        . /etc/os-release
+        case "$ID" in
+            ubuntu|debian|linuxmint|pop|elementary|deepin|raspbian)
+                DISTRO="debian"
+                PKG_INSTALL="sudo apt install -y"
+                info "检测到 Debian/Ubuntu 系统: $PRETTY_NAME"
+                ;;
+            arch|manjaro|endeavouros)
+                DISTRO="arch"
+                PKG_INSTALL="yay -S --noconfirm"
+                info "检测到 Arch Linux 系统: $PRETTY_NAME"
+                ;;
+            fedora|rhel|centos|rocky|alma)
+                DISTRO="fedora"
+                PKG_INSTALL="sudo dnf install -y"
+                info "检测到 Fedora/RHEL 系统: $PRETTY_NAME"
+                ;;
+            *)
+                DISTRO="unknown"
+                warn "未知 Linux 发行版: $ID，将尝试使用 Homebrew"
+                ;;
+        esac
+    else
+        DISTRO="unknown"
+        warn "无法检测发行版，将尝试使用 Homebrew"
+    fi
+
 else
     error "不支持的操作系统: $OS"
     exit 1
 fi
 
 # ============================================================
-# 0. Homebrew 中国镜像源（必须在所有 brew 操作之前）
+# 0. 中国镜像源配置
 # ============================================================
+
+# Homebrew 镜像（macOS 或 Linux 上使用 Homebrew 时）
 export HOMEBREW_API_DOMAIN=https://mirrors.aliyun.com/homebrew/homebrew-bottles/api
 export HOMEBREW_BOTTLE_DOMAIN=https://mirrors.aliyun.com/homebrew/homebrew-bottles
 export HOMEBREW_BREW_GIT_REMOTE=https://mirrors.aliyun.com/homebrew/brew.git
 export HOMEBREW_CORE_GIT_REMOTE=https://mirrors.aliyun.com/homebrew/homebrew-core.git
 export HOMEBREW_CASK_GIT_REMOTE=https://mirrors.aliyun.com/homebrew/homebrew-cask.git
-info "已配置 Homebrew 阿里云镜像源"
 
-# ============================================================
-# 0.1 其他工具的中国镜像源
-# ============================================================
 # npm 淘宝镜像
 if command -v npm &>/dev/null; then
     npm config set registry https://registry.npmmirror.com
@@ -63,62 +94,190 @@ default-index = "https://pypi.tuna.tsinghua.edu.cn/simple"
 UV_EOF
 info "已配置 uv 清华镜像源"
 
-# ============================================================
-# 1. Homebrew
-# ============================================================
-if ! command -v brew &>/dev/null; then
-    info "安装 Homebrew..."
-    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-    # 根据系统设置 brew shellenv
-    if [ -f /opt/homebrew/bin/brew ]; then
-        eval "$(/opt/homebrew/bin/brew shellenv)"
-    elif [ -f /home/linuxbrew/.linuxbrew/bin/brew ]; then
-        eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
-    elif [ -f /usr/local/bin/brew ]; then
-        eval "$(/usr/local/bin/brew shellenv)"
+# Debian/Ubuntu apt 镜像（阿里云）
+if [ "$DISTRO" = "debian" ]; then
+    if [ ! -f /etc/apt/sources.list.d/aliyun-mirror.list ] && \
+       ! grep -q "mirrors.aliyun.com" /etc/apt/sources.list 2>/dev/null; then
+        info "提示：可手动配置 apt 阿里云镜像以加速下载"
+        echo "  参考: https://developer.aliyun.com/mirror/"
     fi
-else
-    info "Homebrew 已安装，跳过"
+fi
+
+# Arch pacman 镜像（中国源排序）
+if [ "$DISTRO" = "arch" ]; then
+    info "提示：可手动编辑 /etc/pacman.d/mirrorlist 将中国源置顶"
 fi
 
 # ============================================================
-# 2. 命令行工具（通过 Homebrew）
+# 1. 基础依赖安装
 # ============================================================
-BREW_PACKAGES=(
-    yadm        # dotfiles 管理
-    gh          # GitHub CLI
-    tmux        # 终端复用
-    btop        # 系统监控
-    htop        # 进程监控
-    lazygit     # Git TUI
-    ripgrep     # 快速搜索
-    fzf         # 模糊搜索
-    jq          # JSON 处理
-    wget        # 下载工具
-    starship    # 终端提示符
-    go          # Go 语言
-    neovim      # 编辑器
-    tree        # 目录树
+install_pkg() {
+    local pkg="$1"
+    if [ "$DISTRO" = "debian" ]; then
+        sudo apt install -y "$pkg"
+    elif [ "$DISTRO" = "arch" ]; then
+        yay -S --noconfirm "$pkg"
+    elif [ "$DISTRO" = "fedora" ]; then
+        sudo dnf install -y "$pkg"
+    elif [ "$DISTRO" = "macos" ] || [ "$DISTRO" = "unknown" ]; then
+        brew install "$pkg"
+    fi
+}
+
+is_installed() {
+    command -v "$1" &>/dev/null
+}
+
+# ============================================================
+# 2. Homebrew（macOS 必需，Linux 可选）
+# ============================================================
+if [ "$DISTRO" = "macos" ] || [ "$DISTRO" = "unknown" ]; then
+    if ! is_installed brew; then
+        info "安装 Homebrew..."
+        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+        if [ -f /opt/homebrew/bin/brew ]; then
+            eval "$(/opt/homebrew/bin/brew shellenv)"
+        elif [ -f /home/linuxbrew/.linuxbrew/bin/brew ]; then
+            eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+        elif [ -f /usr/local/bin/brew ]; then
+            eval "$(/usr/local/bin/brew shellenv)"
+        fi
+    else
+        info "Homebrew 已安装"
+    fi
+fi
+
+# ============================================================
+# 3. Arch Linux: 安装 yay（如果尚未安装）
+# ============================================================
+if [ "$DISTRO" = "arch" ] && ! is_installed yay; then
+    info "安装 yay (AUR helper)..."
+    sudo pacman -S --noconfirm git base-devel
+    git clone https://aur.archlinux.org/yay.git /tmp/yay
+    cd /tmp/yay && makepkg -si --noconfirm
+    cd ~
+    rm -rf /tmp/yay
+fi
+
+# ============================================================
+# 4. 安装命令行工具
+# ============================================================
+TOOLS=(
+    zsh
+    git
+    tmux
+    btop
+    htop
+    lazygit
+    ripgrep
+    fzf
+    jq
+    wget
+    curl
+    tree
+    neovim
+    go
+    nodejs
+    npm
+    git-lfs
+)
+
+# Debian 特有的包名映射
+DEBIAN_NAMES=(
+    zsh
+    git
+    tmux
+    btop
+    htop
+    lazygit
+    ripgrep
+    fzf
+    jq
+    wget
+    curl
+    tree
+    neovim
+    golang-go
+    nodejs
+    npm
+    git-lfs
+)
+
+# Arch 特有的包名映射
+ARCH_NAMES=(
+    zsh
+    git
+    tmux
+    btop
+    htop
+    lazygit
+    ripgrep
+    fzf
+    jq
+    wget
+    curl
+    tree
+    neovim
+    go
+    nodejs
+    npm
+    git-lfs
+)
+
+# macOS / Homebrew 包名映射
+BREW_NAMES=(
+    zsh
+    git
+    tmux
+    btop
+    htop
+    lazygit
+    ripgrep
+    fzf
+    jq
+    wget
+    curl
+    tree
+    neovim
+    go
+    node
+    node
+    git-lfs
 )
 
 info "安装命令行工具..."
-for pkg in "${BREW_PACKAGES[@]}"; do
-    if brew list "$pkg" &>/dev/null; then
-        info "  $pkg 已安装"
+for i in "${!TOOLS[@]}"; do
+    cmd="${TOOLS[$i]}"
+
+    # 特殊处理：nodejs 命令是 node
+    if [ "$cmd" = "nodejs" ]; then
+        cmd="node"
+    fi
+
+    if is_installed "$cmd"; then
+        info "  $cmd 已安装"
+        continue
+    fi
+
+    warn "  安装 $cmd..."
+    if [ "$DISTRO" = "debian" ]; then
+        sudo apt install -y "${DEBIAN_NAMES[$i]}"
+    elif [ "$DISTRO" = "arch" ]; then
+        yay -S --noconfirm "${ARCH_NAMES[$i]}"
+    elif [ "$DISTRO" = "fedora" ]; then
+        sudo dnf install -y "${TOOLS[$i]}"
     else
-        warn "  安装 $pkg..."
-        brew install "$pkg"
+        brew install "${BREW_NAMES[$i]}"
     fi
 done
 
 # ============================================================
-# 3. Homebrew Cask（仅 macOS）
+# 5. Homebrew Cask（仅 macOS）
 # ============================================================
 if $IS_MACOS; then
     BREW_CASKS=(
-        ghostty     # 终端模拟器
+        ghostty
     )
-
     info "安装 macOS 应用..."
     for cask in "${BREW_CASKS[@]}"; do
         if brew list --cask "$cask" &>/dev/null; then
@@ -129,11 +288,11 @@ if $IS_MACOS; then
         fi
     done
 else
-    info "跳过 macOS 专属应用（Ghostty 等）"
+    info "跳过 macOS 专属应用"
 fi
 
 # ============================================================
-# 4. Oh My Zsh
+# 6. Oh My Zsh
 # ============================================================
 if [ ! -d "$HOME/.oh-my-zsh" ]; then
     info "安装 Oh My Zsh..."
@@ -142,7 +301,6 @@ else
     info "Oh My Zsh 已安装"
 fi
 
-# Zsh 插件
 ZSH_CUSTOM="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"
 
 if [ ! -d "$ZSH_CUSTOM/plugins/zsh-autosuggestions" ]; then
@@ -156,9 +314,9 @@ if [ ! -d "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting" ]; then
 fi
 
 # ============================================================
-# 5. Python 工具链（uv）
+# 7. Python 工具链（uv）
 # ============================================================
-if ! command -v uv &>/dev/null; then
+if ! is_installed uv; then
     info "安装 uv（Python 包管理器）..."
     curl -LsSf https://astral.sh/uv/install.sh | sh
 else
@@ -166,17 +324,7 @@ else
 fi
 
 # ============================================================
-# 6. Node.js
-# ============================================================
-if ! command -v node &>/dev/null; then
-    info "安装 Node.js..."
-    brew install node
-else
-    info "Node.js 已安装 ($(node --version))"
-fi
-
-# ============================================================
-# 7. Neovim 插件（LazyVim）
+# 8. Neovim 插件（LazyVim）
 # ============================================================
 if [ -d "$HOME/.config/nvim" ]; then
     info "Neovim 配置已存在，安装插件..."
@@ -186,24 +334,18 @@ else
 fi
 
 # ============================================================
-# 8. fzf 初始化
+# 9. fzf 初始化
 # ============================================================
-if command -v fzf &>/dev/null; then
+if is_installed fzf; then
     info "配置 fzf 快捷键和补全..."
-    # 自动检测 fzf 安装路径
-    FZF_PREFIX="$(brew --prefix 2>/dev/null || echo /usr)"
-    "$FZF_PREFIX/opt/fzf/install" --all --no-bash --no-fish 2>/dev/null || true
-fi
-
-# ============================================================
-# 9. Git LFS
-# ============================================================
-if ! command -v git-lfs &>/dev/null; then
-    info "安装 Git LFS..."
-    brew install git-lfs
-    git lfs install
-else
-    info "Git LFS 已安装"
+    if $IS_MACOS; then
+        "$(brew --prefix)/opt/fzf/install" --all --no-bash --no-fish 2>/dev/null || true
+    else
+        # Linux 上 fzf 通常由包管理器自动配置
+        if [ -f /usr/share/doc/fzf/examples/key-bindings.zsh ]; then
+            info "  fzf 键绑定已由包管理器配置"
+        fi
+    fi
 fi
 
 # ============================================================
@@ -221,8 +363,7 @@ EOF
         echo "  1. 访问 https://codestats.net 获取 API key"
         echo "  2. 创建 ~/.config/code-stats/secrets.env："
         echo "     CODESTATS_API_KEY=your_key_here"
-        echo "  3. 创建 ~/.config/code-stats/config.toml："
-        echo "     api_token = \"your_key_here\""
+        echo "  3. 运行 yadm bootstrap 自动生成 config.toml"
     fi
 else
     info "code-stats 配置已存在"
@@ -234,7 +375,6 @@ fi
 if [ ! -f "$HOME/.ssh/id_ed25519" ]; then
     warn "未找到 SSH 密钥，请手动生成："
     echo "  ssh-keygen -t ed25519 -C 'your_email@example.com'"
-    echo "  gh auth login"
 else
     info "SSH 密钥已存在"
 fi
@@ -242,11 +382,13 @@ fi
 # ============================================================
 # 12. GitHub CLI 认证
 # ============================================================
-if ! gh auth status &>/dev/null; then
-    warn "GitHub CLI 未登录，请运行："
-    echo "  gh auth login"
-else
-    info "GitHub CLI 已登录"
+if is_installed gh; then
+    if ! gh auth status &>/dev/null; then
+        warn "GitHub CLI 未登录，请运行："
+        echo "  gh auth login"
+    else
+        info "GitHub CLI 已登录"
+    fi
 fi
 
 # ============================================================
@@ -257,12 +399,16 @@ echo -e "${GREEN}========================================${NC}"
 echo -e "${GREEN}  Bootstrap 完成！${NC}"
 echo -e "${GREEN}========================================${NC}"
 echo ""
-echo "系统: $OS"
+echo "系统: $OS ($DISTRO)"
+echo "包管理器: ${PKG_INSTALL:-brew}"
 echo ""
 echo "可能还需要手动操作："
 echo "  1. gh auth login          — 登录 GitHub"
 echo "  2. ssh-keygen             — 生成 SSH 密钥"
 if $IS_MACOS; then
 echo "  3. 打开 Ghostty/iTerm2    — 配置终端外观"
+fi
+if [ "$DISTRO" = "arch" ]; then
+echo "  3. 编辑 mirrorlist        — 配置 pacman 中国源"
 fi
 echo ""
