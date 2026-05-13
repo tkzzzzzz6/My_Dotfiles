@@ -8,103 +8,108 @@
 
 
 # -- bindings ------------------------------------------------------------------
+# -- 按键绑定 -------------------------------------------------------------------
 
-# preserve tmux stock bindings,
-# while adding bindings that don't conflict with these stock bindings
-# /!\ this disables some of Oh my tmux! bindings described in README.md
-#   - true
-#   - false (default)
+# 保留 tmux 默认按键绑定，
+# 同时添加不与默认绑定冲突的自定义按键
+# /!\ 这会禁用 Oh my tmux! 中部分按键绑定（详见 README.md）
+#   - true  （保留默认绑定）
+#   - false （不保留，默认值）
 tmux_conf_preserve_stock_bindings=false
 
 
 # -- session creation ----------------------------------------------------------
+# -- 会话创建 -------------------------------------------------------------------
 
-# prompt for session name when creating a new session, possible values are:
-#   - true
-#   - false (default)
-#   - disabled (do not modify new-session bindings)
+# 创建新会话时是否提示输入会话名称，可选值：
+#   - true     （提示输入名称）
+#   - false    （不提示，默认值）
+#   - disabled （不修改新建会话的按键绑定）
 tmux_conf_new_session_prompt=false
 
-# new session retains current path, possible values are:
-#   - true
-#   - false (default)
-#   - disabled (do not modify new-session bindings)
-tmux_conf_new_session_retain_current_path=false
+# 新建会话是否继承当前路径，可选值：
+#   - true     （继承当前路径）
+#   - false    （不继承，默认值）
+#   - disabled （不修改新建会话的按键绑定）
+tmux_conf_new_session_retain_current_path=true
 
 
 # -- windows & pane creation ---------------------------------------------------
+# -- 窗口与窗格创建 -------------------------------------------------------------
 
-# new window retains current path, possible values are:
-#   - true
-#   - false (default)
-#   - disabled (do not modify new-window bindings)
-tmux_conf_new_window_retain_current_path=false
+# 新建窗口是否继承当前路径，可选值：
+#   - true     （继承当前路径）
+#   - false    （不继承，默认值）
+#   - disabled （不修改新建窗口的按键绑定）
+tmux_conf_new_window_retain_current_path=true
 
-# new window tries to reconnect ssh sessions, possible values are:
-#   - true
-#   - false (default)
-#   - disabled (do not modify new-window bindings)
-tmux_conf_new_window_reconnect_ssh=false
+# 新建窗口是否尝试重连 SSH 会话，可选值：
+#   - true     （尝试重连）
+#   - false    （不重连，默认值）
+#   - disabled （不修改新建窗口的按键绑定）
+tmux_conf_new_window_reconnect_ssh=true
 
-# new pane retains current path, possible values are:
-#   - true (default)
-#   - false
-#   - disabled (do not modify split-window bindings)
+# 新建窗格是否继承当前路径，可选值：
+#   - true     （继承当前路径，默认值）
+#   - false    （不继承）
+#   - disabled （不修改分割窗格的按键绑定）
 tmux_conf_new_pane_retain_current_path=true
 
-# new pane tries to reconnect ssh sessions, possible values are:
-#   - true
-#   - false (default)
-#   - disabled (do not modify split-window bindings)
+# 新建窗格是否尝试重连 SSH 会话，可选值：
+#   - true     （尝试重连）
+#   - false    （不重连，默认值）
+#   - disabled （不修改分割窗格的按键绑定）
 tmux_conf_new_pane_reconnect_ssh=false
 
 
 # -- display -------------------------------------------------------------------
+# -- 显示设置 -------------------------------------------------------------------
 
-# RGB 24-bit colour support, possible values are:
-#   - true
-#   - false
-#   - auto (default)
+# RGB 24 位真彩色支持，可选值：
+#   - true  （启用）
+#   - false （禁用）
+#   - auto  （自动检测，默认值）
 #
-# automatic detection relies on the COLORTERM environment variable being defined
-# to 'truecolor' or '24bit' or '$ tput colors' answering '16777216'
-# see https://github.com/termstandard/colors
+# 自动检测依赖 COLORTERM 环境变量设置为 'truecolor' 或 '24bit'，
+# 或者 `tput colors` 返回 '16777216'
+# 参见 https://github.com/termstandard/colors
 tmux_conf_24b_colour=auto
 
 
 # -- theming -------------------------------------------------------------------
+# -- 主题配置 -------------------------------------------------------------------
 
-# enable or disable theming:
-#   - enabled (default)
-#   - disabled
-# when disabled, all tmux_conf_theme_xxx variables are ignored except:
-#   - tmux_conf_theme_pairing
-#   - tmux_conf_theme_prefix
-#   - tmux_conf_theme_mouse
-#   - tmux_conf_theme_root
-#   - tmux_conf_theme_synchronized
+# 启用或禁用主题功能：
+#   - enabled  （启用，默认值）
+#   - disabled （禁用）
+# 禁用时，所有 tmux_conf_theme_xxx 变量将被忽略，除了：
+#   - tmux_conf_theme_pairing     （配对指示器）
+#   - tmux_conf_theme_prefix      （前缀指示器）
+#   - tmux_conf_theme_mouse       （鼠标指示器）
+#   - tmux_conf_theme_root        （root 指示器）
+#   - tmux_conf_theme_synchronized（同步指示器）
 tmux_conf_theme=enabled
 
-# default theme
-tmux_conf_theme_colour_1="#080808"    # dark gray
-tmux_conf_theme_colour_2="#303030"    # gray
-tmux_conf_theme_colour_3="#8a8a8a"    # light gray
-tmux_conf_theme_colour_4="#00afff"    # light blue
-tmux_conf_theme_colour_5="#ffff00"    # yellow
-tmux_conf_theme_colour_6="#080808"    # dark gray
-tmux_conf_theme_colour_7="#e4e4e4"    # white
-tmux_conf_theme_colour_8="#080808"    # dark gray
-tmux_conf_theme_colour_9="#ffff00"    # yellow
-tmux_conf_theme_colour_10="#ff00af"   # pink
-tmux_conf_theme_colour_11="#5fff00"   # green
-tmux_conf_theme_colour_12="#8a8a8a"   # light gray
-tmux_conf_theme_colour_13="#e4e4e4"   # white
-tmux_conf_theme_colour_14="#080808"   # dark gray
-tmux_conf_theme_colour_15="#080808"   # dark gray
-tmux_conf_theme_colour_16="#d70000"   # red
-tmux_conf_theme_colour_17="#e4e4e4"   # white
+# 默认主题颜色配置
+tmux_conf_theme_colour_1="#080808"    # 深灰色
+tmux_conf_theme_colour_2="#303030"    # 灰色
+tmux_conf_theme_colour_3="#8a8a8a"    # 浅灰色
+tmux_conf_theme_colour_4="#00afff"    # 浅蓝色
+tmux_conf_theme_colour_5="#ffff00"    # 黄色
+tmux_conf_theme_colour_6="#080808"    # 深灰色
+tmux_conf_theme_colour_7="#e4e4e4"    # 白色
+tmux_conf_theme_colour_8="#080808"    # 深灰色
+tmux_conf_theme_colour_9="#ffff00"    # 黄色
+tmux_conf_theme_colour_10="#ff00af"   # 粉色
+tmux_conf_theme_colour_11="#5fff00"   # 绿色
+tmux_conf_theme_colour_12="#8a8a8a"   # 浅灰色
+tmux_conf_theme_colour_13="#e4e4e4"   # 白色
+tmux_conf_theme_colour_14="#080808"   # 深灰色
+tmux_conf_theme_colour_15="#080808"   # 深灰色
+tmux_conf_theme_colour_16="#d70000"   # 红色
+tmux_conf_theme_colour_17="#e4e4e4"   # 白色
 
-# default theme (ansi)
+# 默认主题（ANSI 色彩方案，取消注释即可使用）
 #tmux_conf_theme_colour_1="colour0"
 #tmux_conf_theme_colour_2="colour8"
 #tmux_conf_theme_colour_3="colour8"
@@ -123,387 +128,366 @@ tmux_conf_theme_colour_17="#e4e4e4"   # white
 #tmux_conf_theme_colour_16="colour1"
 #tmux_conf_theme_colour_17="colour15"
 
-# window style
-tmux_conf_theme_window_fg="default"
-tmux_conf_theme_window_bg="default"
+# 窗口样式
+tmux_conf_theme_window_fg="default"   # 前景色
+tmux_conf_theme_window_bg="default"   # 背景色
 
-# highlight focused pane, possible values are:
-#   - true
-#   - false (default)
-tmux_conf_theme_highlight_focused_pane=false
+# 是否高亮当前聚焦的窗格，可选值：
+#   - true  （启用高亮）
+#   - false （不启用，默认值）
+tmux_conf_theme_highlight_focused_pane=true
 
-# focused pane colours:
+# 聚焦窗格的背景色
 tmux_conf_theme_focused_pane_bg="$tmux_conf_theme_colour_2"
 
-# pane border style, possible values are:
-#   - thin (default)
-#   - fat
+# 窗格边框样式，可选值：
+#   - thin （细边框，默认值）
+#   - fat  （粗边框）
 tmux_conf_theme_pane_border_style=thin
 
-# pane borders colours:
-tmux_conf_theme_pane_border="$tmux_conf_theme_colour_2"
-tmux_conf_theme_pane_active_border="$tmux_conf_theme_colour_4"
+# 窗格边框颜色
+tmux_conf_theme_pane_border="$tmux_conf_theme_colour_2"          # 非活动窗格边框
+tmux_conf_theme_pane_active_border="$tmux_conf_theme_colour_4"   # 活动窗格边框
 %if #{>=:#{version},3.2}
-tmux_conf_theme_pane_active_border="#{?pane_in_mode,$tmux_conf_theme_colour_9,#{?synchronize-panes,$tmux_conf_theme_colour_16,$tmux_conf_theme_colour_4}}"
+# tmux 3.2+ 支持根据窗格状态动态切换边框颜色
+tmux_conf_theme_pane_active_border="#{?pane_in_mode,$tmux_conf_theme_colour_9,#{?synchronize-panes,$tmux_conf_theme_theme_colour_16,$tmux_conf_theme_colour_4}}"
 %endif
 
-# pane indicator colours (when you hit <prefix> + q)
-tmux_conf_theme_pane_indicator="$tmux_conf_theme_colour_4"
-tmux_conf_theme_pane_active_indicator="$tmux_conf_theme_colour_4"
+# 窗格指示器颜色（按下 <prefix> + q 时显示）
+tmux_conf_theme_pane_indicator="$tmux_conf_theme_colour_4"           # 非活动窗格指示器
+tmux_conf_theme_pane_active_indicator="$tmux_conf_theme_colour_4"    # 活动窗格指示器
 
-# status line style
-tmux_conf_theme_message_fg="$tmux_conf_theme_colour_1"
-tmux_conf_theme_message_bg="$tmux_conf_theme_colour_5"
-tmux_conf_theme_message_attr="bold"
+# 状态栏消息样式
+tmux_conf_theme_message_fg="$tmux_conf_theme_colour_5"       # 消息前景色
+tmux_conf_theme_message_bg="$tmux_conf_theme_colour_1"       # 消息背景色
+tmux_conf_theme_message_attr="bold"                          # 消息字体属性
 
-# status line command style (<prefix> : Escape)
-tmux_conf_theme_message_command_fg="$tmux_conf_theme_colour_5"
-tmux_conf_theme_message_command_bg="$tmux_conf_theme_colour_1"
-tmux_conf_theme_message_command_attr="bold"
+# 状态栏命令样式（按下 <prefix> : 后的输入框）
+tmux_conf_theme_message_command_fg="$tmux_conf_theme_colour_5"   # 命令前景色
+tmux_conf_theme_message_command_bg="$tmux_conf_theme_colour_1"   # 命令背景色
+tmux_conf_theme_message_command_attr="bold"                       # 命令字体属性
 
-# window modes style
-tmux_conf_theme_mode_fg="$tmux_conf_theme_colour_1"
-tmux_conf_theme_mode_bg="$tmux_conf_theme_colour_5"
-tmux_conf_theme_mode_attr="bold"
+# 窗口模式样式（如复制模式等）
+tmux_conf_theme_mode_fg="$tmux_conf_theme_colour_5"    # 模式前景色
+tmux_conf_theme_mode_bg="$tmux_conf_theme_colour_1"    # 模式背景色
+tmux_conf_theme_mode_attr="bold"                       # 模式字体属性
 
-# status line style
-tmux_conf_theme_status_fg="$tmux_conf_theme_colour_3"
-tmux_conf_theme_status_bg="$tmux_conf_theme_colour_1"
-tmux_conf_theme_status_attr="none"
+# 状态栏整体样式
+tmux_conf_theme_status_fg="$tmux_conf_theme_colour_3"    # 状态栏前景色
+tmux_conf_theme_status_bg="$tmux_conf_theme_colour_1"    # 状态栏背景色
+tmux_conf_theme_status_attr="none"                       # 状态栏字体属性
 
-# terminal title
-#   - built-in variables are:
-#     - #{circled_window_index}
-#     - #{circled_session_name}
-#     - #{hostname}
-#     - #{hostname_ssh}
-#     - #{hostname_full}
-#     - #{hostname_full_ssh}
-#     - #{username}
-#     - #{username_ssh}
+# 终端标题栏内容
+#   - 内置变量：
+#     - #{circled_window_index}   （带圈数字的窗口索引）
+#     - #{circled_session_name}   （带圈数字的会话名称）
+#     - #{hostname}               （主机名）
+#     - #{hostname_ssh}           （SSH 连接时的主机名）
+#     - #{hostname_full}          （完整主机名）
+#     - #{hostname_full_ssh}      （SSH 连接时的完整主机名）
+#     - #{username}               （用户名）
+#     - #{username_ssh}           （SSH 连接时的用户名）
 tmux_conf_theme_terminal_title="#h ❐ #S ● #I #W"
 
-# window status style
-#   - built-in variables are:
-#     - #{circled_window_index}
-#     - #{circled_session_name}
-#     - #{hostname}
-#     - #{hostname_ssh}
-#     - #{hostname_full}
-#     - #{hostname_full_ssh}
-#     - #{username}
-#     - #{username_ssh}
-tmux_conf_theme_window_status_fg="$tmux_conf_theme_colour_3"
-tmux_conf_theme_window_status_bg="$tmux_conf_theme_colour_1"
-tmux_conf_theme_window_status_attr="none"
+# 窗口状态栏样式
+#   - 内置变量同上（#{circled_window_index} 等）
+tmux_conf_theme_window_status_fg="$tmux_conf_theme_colour_3"    # 窗口状态前景色
+tmux_conf_theme_window_status_bg="$tmux_conf_theme_colour_1"    # 窗口状态背景色
+tmux_conf_theme_window_status_attr="none"                       # 窗口状态字体属性
 tmux_conf_theme_window_status_format="#I #W#{?#{||:#{window_bell_flag},#{window_zoomed_flag}}, ,}#{?window_bell_flag,!,}#{?window_zoomed_flag,Z,}"
 #tmux_conf_theme_window_status_format="#{circled_window_index} #W#{?#{||:#{window_bell_flag},#{window_zoomed_flag}}, ,}#{?window_bell_flag,!,}#{?window_zoomed_flag,Z,}"
 #tmux_conf_theme_window_status_format="#I #W#{?#{||:#{window_bell_flag},#{window_zoomed_flag}}, ,}#{?window_bell_flag,🔔,}#{?window_zoomed_flag,🔍,}"
 
-# window current status style
-#   - built-in variables are:
-#     - #{circled_window_index}
-#     - #{circled_session_name}
-#     - #{hostname}
-#     - #{hostname_ssh}
-#     - #{hostname_full}
-#     - #{hostname_full_ssh}
-#     - #{username}
-#     - #{username_ssh}
-tmux_conf_theme_window_status_current_fg="$tmux_conf_theme_colour_1"
-tmux_conf_theme_window_status_current_bg="$tmux_conf_theme_colour_4"
-tmux_conf_theme_window_status_current_attr="bold"
+# 当前活动窗口状态栏样式
+#   - 内置变量同上（#{circled_window_index} 等）
+tmux_conf_theme_window_status_current_fg="$tmux_conf_theme_colour_1"    # 当前窗口前景色
+tmux_conf_theme_window_status_current_bg="$tmux_conf_theme_colour_4"    # 当前窗口背景色
+tmux_conf_theme_window_status_current_attr="bold"                       # 当前窗口字体属性（加粗）
 tmux_conf_theme_window_status_current_format="#I #W#{?#{||:#{window_bell_flag},#{window_zoomed_flag}}, ,}#{?window_bell_flag,!,}#{?window_zoomed_flag,Z,}"
 #tmux_conf_theme_window_status_current_format="#{circled_window_index} #W#{?#{||:#{window_bell_flag},#{window_zoomed_flag}}, ,}#{?window_bell_flag,!,}#{?window_zoomed_flag,Z,}"
 #tmux_conf_theme_window_status_current_format="#I #W#{?#{||:#{window_bell_flag},#{window_zoomed_flag}}, ,}#{?window_bell_flag,🔔,}#{?window_zoomed_flag,🔍,}"
 
-# window activity status style
-tmux_conf_theme_window_status_activity_fg="default"
-tmux_conf_theme_window_status_activity_bg="default"
-tmux_conf_theme_window_status_activity_attr="underscore"
+# 窗口有活动（新输出）时的状态样式
+tmux_conf_theme_window_status_activity_fg="default"       # 活动前景色
+tmux_conf_theme_window_status_activity_bg="default"       # 活动背景色
+tmux_conf_theme_window_status_activity_attr="underscore"  # 活动字体属性（下划线）
 
-# window bell status style
-tmux_conf_theme_window_status_bell_fg="$tmux_conf_theme_colour_5"
-tmux_conf_theme_window_status_bell_bg="default"
-tmux_conf_theme_window_status_bell_attr="blink,bold"
+# 窗口响铃时的状态样式
+tmux_conf_theme_window_status_bell_fg="$tmux_conf_theme_colour_5"  # 响铃前景色
+tmux_conf_theme_window_status_bell_bg="default"                     # 响铃背景色
+tmux_conf_theme_window_status_bell_attr="blink,bold"                # 响铃字体属性（闪烁+加粗）
 
-# window last status style
-tmux_conf_theme_window_status_last_fg="$tmux_conf_theme_colour_4"
-tmux_conf_theme_window_status_last_bg="$tmux_conf_theme_colour_2"
-tmux_conf_theme_window_status_last_attr="none"
+# 上一个（最近访问）窗口的状态样式
+tmux_conf_theme_window_status_last_fg="$tmux_conf_theme_colour_4"    # 上一个窗口前景色
+tmux_conf_theme_window_status_last_bg="$tmux_conf_theme_colour_2"    # 上一个窗口背景色
+tmux_conf_theme_window_status_last_attr="none"                       # 上一个窗口字体属性
 
-# status left/right sections separators
-tmux_conf_theme_left_separator_main=""
-tmux_conf_theme_left_separator_sub="|"
-tmux_conf_theme_right_separator_main=""
-tmux_conf_theme_right_separator_sub="|"
-#tmux_conf_theme_left_separator_main='\uE0B0'  # /!\ you don't need to install Powerline
-#tmux_conf_theme_left_separator_sub='\uE0B1'   #   you only need fonts patched with
-#tmux_conf_theme_right_separator_main='\uE0B2' #   Powerline symbols or the standalone
-#tmux_conf_theme_right_separator_sub='\uE0B3'  #   PowerlineSymbols.otf font, see README.md
+# 状态栏左右两侧分隔符样式
+tmux_conf_theme_left_separator_main=""         # 左侧主分隔符
+tmux_conf_theme_left_separator_sub="|"         # 左侧子分隔符
+tmux_conf_theme_right_separator_main=""        # 右侧主分隔符
+tmux_conf_theme_right_separator_sub="|"        # 右侧子分隔符
+# 以下为 Powerline 风格分隔符（取消注释即可使用，需要安装 Powerline 字体）
+#tmux_conf_theme_left_separator_main=''
+#tmux_conf_theme_left_separator_sub=''
+#tmux_conf_theme_right_separator_main=''
+#tmux_conf_theme_right_separator_sub=''
 
-# status left/right content:
-#   - separate main sections with "|"
-#   - separate subsections with ","
-#   - built-in variables are:
-#     - #{battery_bar}
-#     - #{battery_hbar}
-#     - #{battery_percentage}
-#     - #{battery_status}
-#     - #{battery_vbar}
-#     - #{circled_session_name}
-#     - #{hostname_ssh}
-#     - #{hostname}
-#     - #{hostname_full}
-#     - #{hostname_full_ssh}
-#     - #{loadavg}
-#     - #{mouse}
-#     - #{pairing}
-#     - #{prefix}
-#     - #{root}
-#     - #{synchronized}
-#     - #{uptime_y}
-#     - #{uptime_d} (modulo 365 when #{uptime_y} is used)
-#     - #{uptime_h}
-#     - #{uptime_m}
-#     - #{uptime_s}
-#     - #{username}
-#     - #{username_ssh}
+# 状态栏左右两侧内容配置：
+#   - 使用 "|" 分隔主区域
+#   - 使用 "," 分隔子区域
+#   - 内置变量：
+#     - #{battery_bar}         （电池条形图）
+#     - #{battery_hbar}        （电池水平条形图）
+#     - #{battery_percentage}  （电池百分比）
+#     - #{battery_status}      （电池充放电状态）
+#     - #{battery_vbar}        （电池垂直条形图）
+#     - #{circled_session_name}（带圈数字的会话名）
+#     - #{hostname_ssh}        （SSH 主机名）
+#     - #{hostname}            （主机名）
+#     - #{hostname_full}       （完整主机名）
+#     - #{hostname_full_ssh}   （SSH 完整主机名）
+#     - #{loadavg}             （系统负载）
+#     - #{mouse}               （鼠标状态指示器）
+#     - #{pairing}             （配对状态指示器）
+#     - #{prefix}              （前缀键指示器）
+#     - #{root}                （root 用户指示器）
+#     - #{synchronized}        （窗格同步指示器）
+#     - #{uptime_y}            （运行年数）
+#     - #{uptime_d}            （运行天数，与 uptime_y 同时使用时为模 365）
+#     - #{uptime_h}            （运行小时数）
+#     - #{uptime_m}            （运行分钟数）
+#     - #{uptime_s}            （运行秒数）
+#     - #{username}            （用户名）
+#     - #{username_ssh}        （SSH 用户名）
 tmux_conf_theme_status_left=" ❐ #S | ↑#{?uptime_y, #{uptime_y}y,}#{?uptime_d, #{uptime_d}d,}#{?uptime_h, #{uptime_h}h,}#{?uptime_m, #{uptime_m}m,} "
 #tmux_conf_theme_status_left=" ❐ #S | ↑#{?uptime_y, #{uptime_y}y,}#{?uptime_d, #{uptime_d}d,}#{?uptime_h, #{uptime_h}h,}#{?uptime_m, #{uptime_m}m,} | #{pretty_pane_current_path} "
-tmux_conf_theme_status_right=" #{prefix}#{mouse}#{pairing}#{synchronized}#{?battery_status,#{battery_status},}#{?battery_bar, #{battery_bar},}#{?battery_percentage, #{battery_percentage},} , %R , %d %b | #{username}#{root} | #{hostname} "
+tmux_conf_theme_status_right=" #{prefix}#{mouse}#{pairing}#{synchronized}#{?battery_status,#{battery_status},}#{?battery_bar, #{battery_bar},}#{?battery_percentage, #{battery_percentage},} , CPU #{cpu_percentage} | %R , %d %b | #{username}#{root} | #{hostname} "
 
-# status left style
+# 状态栏左侧样式（每段用逗号分隔，对应 status_left 中的 "|" 分隔段）
 tmux_conf_theme_status_left_fg="$tmux_conf_theme_colour_6,$tmux_conf_theme_colour_7,$tmux_conf_theme_colour_8"
 tmux_conf_theme_status_left_bg="$tmux_conf_theme_colour_9,$tmux_conf_theme_colour_10,$tmux_conf_theme_colour_11"
 tmux_conf_theme_status_left_attr="bold,none,none"
 
-# status right style
+# 状态栏右侧样式（每段用逗号分隔，对应 status_right 中的 "|" 分隔段）
 tmux_conf_theme_status_right_fg="$tmux_conf_theme_colour_12,$tmux_conf_theme_colour_13,$tmux_conf_theme_colour_14"
 tmux_conf_theme_status_right_bg="$tmux_conf_theme_colour_15,$tmux_conf_theme_colour_16,$tmux_conf_theme_colour_17"
 tmux_conf_theme_status_right_attr="none,none,bold"
 
-# pairing indicator
+# 配对指示器（多人同时连接时显示）
 tmux_conf_theme_pairing="⚇"                 # U+2687
 tmux_conf_theme_pairing_fg="none"
 tmux_conf_theme_pairing_bg="none"
 tmux_conf_theme_pairing_attr="none"
 
-# prefix indicator
+# 前缀键指示器（按下前缀键后显示）
 tmux_conf_theme_prefix="⌨"                  # U+2328
 tmux_conf_theme_prefix_fg="none"
 tmux_conf_theme_prefix_bg="none"
 tmux_conf_theme_prefix_attr="none"
 
-# mouse indicator
+# 鼠标指示器（鼠标模式开启时显示）
 tmux_conf_theme_mouse="↗"                   # U+2197
 tmux_conf_theme_mouse_fg="none"
 tmux_conf_theme_mouse_bg="none"
 tmux_conf_theme_mouse_attr="none"
 
-# root indicator
+# root 用户指示器（以 root 身份运行时显示）
 tmux_conf_theme_root="!"
 tmux_conf_theme_root_fg="none"
 tmux_conf_theme_root_bg="none"
 tmux_conf_theme_root_attr="bold,blink"
 
-# synchronized indicator
+# 同步输入指示器（窗格同步模式开启时显示）
 tmux_conf_theme_synchronized="⚏"            # U+268F
 tmux_conf_theme_synchronized_fg="none"
 tmux_conf_theme_synchronized_bg="none"
 tmux_conf_theme_synchronized_attr="none"
 
-# battery bar symbols
-tmux_conf_battery_bar_symbol_full="◼"
-tmux_conf_battery_bar_symbol_empty="◻"
-#tmux_conf_battery_bar_symbol_full="♥"
-#tmux_conf_battery_bar_symbol_empty="·"
+# 电池条形图符号
+tmux_conf_battery_bar_symbol_full="◼"     # 电量满格符号
+tmux_conf_battery_bar_symbol_empty="◻"    # 电量空格符号
+#tmux_conf_battery_bar_symbol_full="♥"    # 备选：心形满格符号
+#tmux_conf_battery_bar_symbol_empty="·"   # 备选：点形空格符号
 
-# battery bar length (in number of symbols), possible values are:
-#   - auto
-#   - a number, e.g. 5
+# 电池条形图长度（符号数量），可选值：
+#   - auto     （自动调整）
+#   - 数字      （如 5，表示固定 5 个符号）
 tmux_conf_battery_bar_length="auto"
 
-# battery bar palette, possible values are:
-#   - gradient (default)
-#   - heat
-#   - "colour_full_fg,colour_empty_fg,colour_bg"
-#   - gradient(colour_fg_1,colour_fg_2,...,colour_fg_n)
-tmux_conf_battery_bar_palette="gradient"
-#tmux_conf_battery_bar_palette="#d70000,#e4e4e4,#000000"   # red, white, black
+# 电池条形图配色方案，可选值：
+#   - gradient                              （渐变色，默认值）
+#   - heat                                  （热力图）
+#   - "满格前景色,空格前景色,背景色"           （自定义颜色）
+#   - gradient(颜色1,颜色2,...,颜色n)         （自定义渐变）
+tmux_conf_battery_bar_palette="heat"
+#tmux_conf_battery_bar_palette="#d70000,#e4e4e4,#000000"   # 红色、白色、黑色
 #tmux_conf_battery_bar_palette="gradient(#00afff,#47a2ff,#7c91ff,#ac7afb,#d65be2,#e163df,#eb6cdd,#f475db,#ec9ff1,#eac3fe,#efe2ff,#ffffff)"
 
-# battery hbar palette, possible values are:
-#   - gradient (default)
-#   - heat
-#   - "colour_low,colour_half,colour_full"
-#   - gradient(colour_fg_1,colour_fg_2,...,colour_fg_n)
+# 电池水平条形图配色方案，可选值同上
 tmux_conf_battery_hbar_palette="gradient"
-#tmux_conf_battery_hbar_palette="#d70000,#ff5f00,#5fff00"  # red, orange, green
+#tmux_conf_battery_hbar_palette="#d70000,#ff5f00,#5fff00"  # 红色、橙色、绿色
 #tmux_conf_battery_hbar_palette="gradient(#00afff,#47a2ff,#7c91ff,#ac7afb,#d65be2,#e163df,#eb6cdd,#f475db,#ec9ff1,#eac3fe,#efe2ff,#ffffff)"
 
-# battery vbar palette, possible values are:
-#   - gradient (default)
-#   - heat
-#   - "colour_low,colour_half,colour_full"
-#   - gradient(colour_fg_1,colour_fg_2,...,colour_fg_n)
+# 电池垂直条形图配色方案，可选值同上
 tmux_conf_battery_vbar_palette="gradient"
-#tmux_conf_battery_vbar_palette="#d70000,#ff5f00,#5fff00"  # red, orange, green
+#tmux_conf_battery_vbar_palette="#d70000,#ff5f00,#5fff00"  # 红色、橙色、绿色
 #tmux_conf_battery_vbar_palette="gradient(#00afff,#47a2ff,#7c91ff,#ac7afb,#d65be2,#e163df,#eb6cdd,#f475db,#ec9ff1,#eac3fe,#efe2ff,#ffffff)"
 
-# symbols used to indicate whether battery is charging or discharging
-tmux_conf_battery_status_charging="↑"       # U+2191
-tmux_conf_battery_status_discharging="↓"    # U+2193
-#tmux_conf_battery_status_charging="🔌"     # U+1F50C
-#tmux_conf_battery_status_discharging="🔋"  # U+1F50B
+# 电池充放电状态符号
+#tmux_conf_battery_status_charging="↑"       # 充电中 U+2191
+#tmux_conf_battery_status_discharging="↓"    # 放电中 U+2193
+tmux_conf_battery_status_charging="🔌"     # 备选：插头 emoji
+tmux_conf_battery_status_discharging="🔋"  # 备选：电池 emoji
 
-# clock style (when you hit <prefix> + t)
-# you may want to use %I:%M %p in place of %R in tmux_conf_theme_status_right
-tmux_conf_theme_clock_colour="$tmux_conf_theme_colour_4"
-tmux_conf_theme_clock_style="24"
+# 时钟样式（按下 <prefix> + t 时显示）
+# 如果使用 12 小时制，可将 tmux_conf_theme_status_right 中的 %R 替换为 %I:%M %p
+tmux_conf_theme_clock_colour="$tmux_conf_theme_colour_4"  # 时钟颜色
+tmux_conf_theme_clock_style="24"                          # 24 小时制
 
 
 # -- clipboard -----------------------------------------------------------------
+# -- 剪贴板 --------------------------------------------------------------------
 
-# in copy mode, copying selection also copies to the OS clipboard
-#   - true
-#   - false (default)
-#   - disabled
-# on Linux, this requires xsel, xclip or wl-copy
+# 在复制模式中，选中内容是否同时复制到系统剪贴板
+#   - true     （复制到系统剪贴板）
+#   - false    （不复制，默认值）
+#   - disabled （禁用此功能）
+# 在 Linux 上需要安装 xsel、xclip 或 wl-copy
 tmux_conf_copy_to_os_clipboard=false
 
 
 # -- urlscan -------------------------------------------------------------------
+# -- URL 扫描 ------------------------------------------------------------------
 
-# options passed to urlscan
+# urlscan 工具的命令行选项（用于从终端输出中提取 URL）
 tmux_conf_urlscan_options="--compact --dedupe"
 
 
 # -- user customizations -------------------------------------------------------
+# -- 用户自定义配置 -------------------------------------------------------------
+# 在此区域可以覆盖或修改上述设置
 
-# this is the place to override or undo settings
-
-# increase history size
+# 增加历史记录行数（取消注释并设置所需值）
 #set -g history-limit 10000
 
-# start with mouse mode enabled
-#set -g mouse on
+# 启动时默认开启鼠标支持
+set -g mouse on
 
-# force Vi mode
-#   really you should export VISUAL or EDITOR environment variable, see manual
+# 强制使用 Vi 模式键位
+#   更推荐的做法是设置 VISUAL 或 EDITOR 环境变量，详见手册
 #set -g status-keys vi
 #set -g mode-keys vi
 
-# replace C-b by C-a instead of using both prefixes
+# 将前缀键从 C-b 改为 C-a（取消注释即可生效）
 # set -gu prefix2
 # unbind C-a
 # unbind C-b
 # set -g prefix C-a
 # bind C-a send-prefix
 
-# if you don't want Oh my tmux! to alter a binding or a setting, use #!important
+# 如果不希望 Oh my tmux! 修改某个按键绑定或设置，使用 #!important 标记
 # bind c new-window -c '#{pane_current_path}' #!important
 
-# display a message after toggling mouse support
+# 切换鼠标支持后显示提示消息
 bind m run "cut -c3- '#{TMUX_CONF}' | sh -s _toggle_mouse" \; display 'mouse #{?#{mouse},on,off}'
 
-# move status line to top
-#set -g status-position top
+# 将状态栏移到顶部（取消注释即可生效）
+set -g status-position top
 
 
 # -- tpm -----------------------------------------------------------------------
+# -- TPM 插件管理器 -------------------------------------------------------------
 
-# while I don't use tpm myself, many people requested official support so here
-# is a seamless integration that automatically installs plugins in parallel
+# 虽然作者自己不使用 tpm，但很多人请求官方支持，因此在此提供无缝集成，
+# 会在启动时自动并行安装插件。
 
-# whenever a plugin introduces a variable to be used in 'status-left' or
-# 'status-right', you can use it in 'tmux_conf_theme_status_left' and
-# 'tmux_conf_theme_status_right' variables.
+# 当插件引入了可用于 'status-left' 或 'status-right' 的变量时，
+# 你可以在 'tmux_conf_theme_status_left' 和 'tmux_conf_theme_status_right' 中使用它。
 
-# by default, launching tmux will update tpm and all plugins
-#   - true (default)
-#   - false
+# 启动 tmux 时是否自动更新 tpm 和所有插件
+#   - true  （自动更新，默认值）
+#   - false （不自动更新）
 tmux_conf_update_plugins_on_launch=true
 
-# by default, reloading the configuration will update tpm and all plugins
-#   - true (default)
-#   - false
+# 重新加载配置时是否自动更新 tpm 和所有插件
+#   - true  （自动更新，默认值）
+#   - false （不自动更新）
 tmux_conf_update_plugins_on_reload=true
 
-# by default, reloading the configuration will uninstall tpm and plugins when no
-# plugins are enabled
-#   - true (default)
-#   - false
+# 重新加载配置时，如果没有启用任何插件，是否自动卸载 tpm 和插件
+#   - true  （自动卸载，默认值）
+#   - false （不自动卸载）
 tmux_conf_uninstall_plugins_on_reload=true
 
-# /!\ the tpm bindings differ slightly from upstream:
-#   - installing plugins: <prefix> + I
-#   - uninstalling plugins: <prefix> + Alt + u
-#   - updating plugins: <prefix> + u
+# /!\ tpm 按键绑定与上游版本略有不同：
+#   - 安装插件：  <prefix> + I
+#   - 卸载插件：  <prefix> + Alt + u
+#   - 更新插件：  <prefix> + u
 
-# /!\ do not add set -g @plugin 'tmux-plugins/tpm'
-# /!\ do not add run '~/.tmux/plugins/tpm/tpm'
+# /!\ 不要添加 set -g @plugin 'tmux-plugins/tpm'
+# /!\ 不要添加 run '~/.tmux/plugins/tpm/tpm'
 
-# /!\ the 'set -g @tpm_plugins' syntax is not supported
-# to enable a plugin, use the 'set -g @plugin' syntax:
-# visit https://github.com/tmux-plugins for available plugins
-#set -g @plugin 'tmux-plugins/tmux-copycat'
-#set -g @plugin 'tmux-plugins/tmux-cpu'
-#set -g @plugin 'tmux-plugins/tmux-resurrect'
-#set -g @plugin 'tmux-plugins/tmux-continuum'
-#set -g @continuum-restore 'on'
+# /!\ 不支持 'set -g @tpm_plugins' 语法
+# 要启用插件，请使用 'set -g @plugin' 语法：
+# 访问 https://github.com/tmux-plugins 查看可用插件
+set -g @plugin 'tmux-plugins/tmux-copycat'     # 复制增强插件
+set -g @plugin 'tmux-plugins/tmux-cpu'          # CPU 状态显示插件
+set -g @plugin 'tmux-plugins/tmux-resurrect'    # 会话恢复插件
+set -g @plugin 'tmux-plugins/tmux-continuum'    # 自动保存/恢复插件
+set -g @continuum-restore 'on'                  # 开启自动恢复
 
 
 # -- custom variables ----------------------------------------------------------
+# -- 自定义变量 -----------------------------------------------------------------
 
-# to define a custom #{foo} variable, define a POSIX shell function between the
-# '# EOF' and the '# "$@"' lines. Please note that the opening brace { character
-# must be on the same line as the function name otherwise the parse won't detect
-# it.
+# 要定义自定义的 #{foo} 变量，请在下面的 '# EOF' 和 '# "$@"' 行之间
+# 定义一个 POSIX shell 函数。请注意：左花括号 { 必须与函数名在同一行，
+# 否则解析器无法检测到它。
 #
-# then, use #{foo} in e.g. the 'tmux_conf_theme_status_left' or the
-# 'tmux_conf_theme_status_right' variables.
+# 然后就可以在 'tmux_conf_theme_status_left' 或 'tmux_conf_theme_status_right'
+# 中使用 #{foo} 变量了。
 
 # ------------------------------------------------------------------------------
 
-# # /!\ do not remove the following line
+# # /!\ 不要删除以下行
 # EOF
 #
-# # /!\ do not "uncomment" the functions: the leading "# " characters are needed
+# # /!\ 不要去掉函数前的 "# " 注释符号：这些前缀是必需的
 #
-# # usage: #{weather}
-# weather() {                                         # see https://github.com/chubin/wttr.in#one-line-output
-#   curl -f -s -m 2 'wttr.in?format=3' || printf '\n' # /!\ make sure curl is installed
-#   sleep 900                                         # sleep for 15 minutes, throttle network requests whatever the value of status-interval
+# # 用法示例：#{weather}
+# weather() {                                         # 参见 https://github.com/chubin/wttr.in#one-line-output
+#   curl -f -s -m 2 'wttr.in?format=3' || printf '\n' # /!\ 需要安装 curl
+#   sleep 900                                         # 休眠 15 分钟，限制网络请求频率（不受 status-interval 影响）
 # }
 #
-# # usage: #{online}
+# # 用法示例：#{online}
 # online() {
 #   ping -c 1 1.1.1.1 >/dev/null 2>&1 && printf '✔' || printf '✘'
 # }
 #
-# # usage: #{wan_ip_v4}
+# # 用法示例：#{wan_ip_v4}
 # wan_ip_v4() {
 #   curl -f -s -m 2 -4 ifconfig.me
-#   sleep 300                                         # sleep for 5 minutes, throttle network requests whatever the value of status-interval
+#   sleep 300                                         # 休眠 5 分钟，限制网络请求频率
 # }
 #
-# # usage: #{wan_ip_v6}
+# # 用法示例：#{wan_ip_v6}
 # wan_ip_v6() {
 #   curl -f -s -m 2 -6 ifconfig.me
-#   sleep 300                                         # sleep for 5 minutes, throttle network requests whatever the value of status-interval
+#   sleep 300                                         # 休眠 5 分钟，限制网络请求频率
 # }
 #
-# # usage: #{github_stars}, #{github_stars tmux/tmux}, ...
+# # 用法示例：#{github_stars}, #{github_stars tmux/tmux}, ...
 # github_stars() {
 #   repository=${1##*https://github.com/}
 #   repository=${repository%% *}
 #   repository=${repository%%.git}
 #   url="https://api.github.com/repos/${repository:-gpakosz/.tmux}"
 #   curl -s "$url" | perl -MJSON::PP=decode_json -CO -0777 -E '$response = decode_json(readline *STDIN); say ($response->{stargazers_count})'
-#   sleep 300                                         # sleep for 5 minutes, throttle network requests whatever the value of status-interval
+#   sleep 300                                         # 休眠 5 分钟，限制网络请求频率
 # }
 #
 # "$@"
-# # /!\ do not remove the previous line
-# #     do not write below this line
+# # /!\ 不要删除上一行
+# #     不要在此行下方写入内容
