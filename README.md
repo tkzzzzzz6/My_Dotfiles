@@ -1,5 +1,8 @@
 # My Dotfiles
 
+yadm remote set-url origin git@github.com:tkzzzzzz6/My_Dotfiles.git
+
+
 个人机器配置文件，使用 [yadm](https://yadm.io/) 管理。
 
 ## 快速恢复
