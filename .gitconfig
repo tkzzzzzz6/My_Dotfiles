@@ -1,5 +1,15 @@
 [user]
 	name = tkzzzzzz6
 	email = tk2535550189@gmail.com
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
+[pull]
+	rebase = false
+[http]
+	postBuffer = 524288000
+	version = HTTP/1.1
 [init]
 	defaultBranch = main

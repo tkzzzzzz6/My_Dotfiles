@@ -1,0 +1,54 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "provider": {
+    "doubao": {
+      "models": {
+        "ark-code-latest": {
+          "name": "ark-code-latest"
+        }
+      },
+      "name": "DouBaoSeed",
+      "npm": "@ai-sdk/anthropic",
+      "options": {
+        "apiKey": "d7e2ed8a-ffaa-4a9c-bf0b-36d8af23a6cb",
+        "baseURL": "https://ark.cn-beijing.volces.com/api/coding"
+      }
+    },
+    "newapi": {
+      "npm": "@ai-sdk/openai-compatible",
+      "options": {
+        "baseURL": "https://api.chshapi.cn/v1",
+        "apiKey": "sk-ygrfTKr3YoRuVLDTlDoHFvoYRtEZjzO9yXtRz728qh4Hrefb",
+        "setCacheKey": true
+      },
+      "models": {
+        "gemini-3.1-flash-lite-preview": {
+          "name": ""
+        },
+        "gpt-5.4-openai-compact": {
+          "name": ""
+        },
+        "gpt-5.5": {
+          "name": ""
+        }
+      }
+    },
+    "xiaomi": {
+      "npm": "@ai-sdk/anthropic",
+      "name": "Xiaomi MiMo",
+      "options": {
+        "baseURL": "https://token-plan-cn.xiaomimimo.com/anthropic",
+        "apiKey": "tp-cbp9z7vzfzcu6zfjfme1gsxx9qqcej4rfdzq5fnu22vcjuly",
+        "setCacheKey": true
+      },
+      "models": {
+        "MiMo-V2.5": {
+          "name": "MiMo-V2.5"
+        },
+        "MiMo-V2.5-Pro": {
+          "name": "MiMo-V2.5-Pro"
+        }
+      }
+    }
+  }
+}
