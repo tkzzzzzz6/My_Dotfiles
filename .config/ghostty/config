@@ -1,0 +1,72 @@
+# Ghostty 配置
+command = /usr/bin/zsh
+
+# ==========================
+# 主题 & 颜色 (Catppuccin)
+# ==========================
+theme = Ayu
+background = 1e1e2e
+foreground = cdd6f4
+cursor-color = f5e0dc
+selection-background = 353749
+selection-foreground = cdd6f4
+minimum-contrast = 1.1
+
+# ==========================
+# 字体配置
+# ==========================
+font-size = 9.5
+font-feature = +liga
+font-feature = +calt
+
+# ==========================
+# 窗口 & 外观
+# ==========================
+background-opacity = 0.95
+background-blur = 20
+window-padding-x = 0
+window-padding-y = 0
+window-padding-balance = true
+window-decoration = auto
+
+# ==========================
+# 性能优化 (Linux)
+# ==========================
+# GTK 单实例模式 - 大幅提升启动速度
+gtk-single-instance = true
+# 异步后端（Hyprland/Wayland 推荐）
+async-backend = epoll
+
+# ==========================
+# 滚动 & 缓冲区
+# ==========================
+scrollback-limit = 100000
+
+# ==========================
+# Shell 集成
+# ==========================
+shell-integration = detect
+shell-integration-features = cursor,sudo,title
+
+# ==========================
+# 剪贴板安全
+# ==========================
+clipboard-read = allow
+clipboard-write = allow
+clipboard-trim-trailing-spaces = true
+
+
+# 快捷键配置
+
+# ==========================
+# 分屏导航快捷键
+# ==========================
+
+# Ctrl+[ : 跳转到前一个分屏
+keybind = ctrl+left_bracket=goto_split:previous
+
+# Ctrl+] : 跳转到后一个分屏
+keybind = ctrl+right_bracket=goto_split:next
+
+# Ctrl+w : 关闭当前分屏
+keybind = ctrl+w=close_surface

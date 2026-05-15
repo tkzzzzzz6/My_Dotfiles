@@ -1,4 +1,3 @@
-
 . "$HOME/.local/bin/env"
 
 # opencode

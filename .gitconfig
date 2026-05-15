@@ -1,6 +1,6 @@
 [user]
 	name = tkzzzzzz6
-	email = tanke@stu.sicau.edu.cn
+	email = tk2535550189@gmail.com
 [filter "lfs"]
 	clean = git-lfs clean -- %f
 	smudge = git-lfs smudge -- %f
@@ -11,3 +11,5 @@
 [http]
 	postBuffer = 524288000
 	version = HTTP/1.1
+[init]
+	defaultBranch = main
