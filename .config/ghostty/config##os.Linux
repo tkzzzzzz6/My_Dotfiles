@@ -1,0 +1,54 @@
+# Ghostty 终端配置 (Linux)
+
+# ============================================================
+# 字体
+# ============================================================
+font-family = Fira Code
+font-size = 13.5
+font-thicken = true
+
+# ============================================================
+# 外观
+# ============================================================
+theme = Tokyo Night
+background-opacity = 0.92
+window-padding-x = 10
+window-padding-y = 10
+window-decoration = auto
+
+# ============================================================
+# 光标
+# ============================================================
+cursor-style = block
+cursor-style-blink = true
+
+# ============================================================
+# 滚动
+# ============================================================
+scrollback-limit = 10000
+
+# ============================================================
+# Shell
+# ============================================================
+command = /bin/zsh
+
+# ============================================================
+# 快捷键
+# ============================================================
+keybind = ctrl+t=new_tab
+keybind = ctrl+w=close_surface
+keybind = ctrl+d=new_split:right
+keybind = ctrl+shift+d=new_split:down
+keybind = alt+left=goto_tab:1
+keybind = alt+right=goto_tab:2
+keybind = alt+1=goto_tab:1
+keybind = alt+2=goto_tab:2
+keybind = alt+3=goto_tab:3
+keybind = alt+4=goto_tab:4
+keybind = alt+5=goto_tab:5
+
+# ============================================================
+# 剪贴板
+# ============================================================
+copy-on-select = clipboard
+clipboard-paste-protection = false
