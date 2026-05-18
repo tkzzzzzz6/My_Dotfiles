@@ -88,7 +88,7 @@ tmux_conf_24b_colour=auto
 #   - tmux_conf_theme_mouse       （鼠标指示器）
 #   - tmux_conf_theme_root        （root 指示器）
 #   - tmux_conf_theme_synchronized（同步指示器）
-tmux_conf_theme=enabled
+tmux_conf_theme=disabled
 
 # 默认主题颜色配置
 tmux_conf_theme_colour_1="#080808"    # 深灰色
@@ -432,9 +432,23 @@ tmux_conf_uninstall_plugins_on_reload=true
 # 要启用插件，请使用 'set -g @plugin' 语法：
 # 访问 https://github.com/tmux-plugins 查看可用插件
 set -g @plugin 'tmux-plugins/tmux-copycat'     # 复制增强插件
-set -g @plugin 'tmux-plugins/tmux-cpu'          # CPU 状态显示插件
+set -g @plugin 'fabioluciano/tmux-powerkit'    # PowerKit 状态栏框架（包含 Tokyo Night 主题）
 set -g @plugin 'tmux-plugins/tmux-resurrect'    # 会话恢复插件
 set -g @plugin 'tmux-plugins/tmux-continuum'    # 自动保存/恢复插件
+
+# -- PowerKit 配置 ---------------------------------------------------------------
+# PowerKit 主题配置（Tokyo Night）
+set -g @powerkit_theme "tokyo-night"           # 使用 tokyo-night 主题
+set -g @powerkit_theme_variant "night"         # 主题变体：night, storm, day
+set -g @powerkit_separator_style "rounded"     # 分隔符样式：rounded, normal, flame, pixel, honeycomb
+set -g @powerkit_elements_spacing "both"       # 元素间距：both, top, bottom, none
+set -g @powerkit_transparent "true"            # 透明背景
+set -g @powerkit_status_interval "5"           # 更新间隔（秒）
+
+# PowerKit 插件列表（可根据需要调整）
+set -g @powerkit_plugins "datetime,battery,cpu,memory,git,hostname"
+
+# continuum 自动恢复配置
 set -g @continuum-restore 'on'                  # 开启自动恢复
 
 
@@ -464,7 +478,7 @@ set -g @continuum-restore 'on'                  # 开启自动恢复
 # # 用法示例：#{online}
 # online() {
 #   ping -c 1 1.1.1.1 >/dev/null 2>&1 && printf '✔' || printf '✘'
-# }
+# 
 #
 # # 用法示例：#{wan_ip_v4}
 # wan_ip_v4() {
