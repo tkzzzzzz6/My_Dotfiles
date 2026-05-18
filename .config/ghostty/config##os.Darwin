@@ -10,11 +10,11 @@ font-thicken = true
 # ============================================================
 # 外观
 # ============================================================
-theme = Tokyo Night
-background-opacity = 0.92
+theme = TokyoNight Storm
+background-opacity = 0.85
 background-blur-radius = 20
-window-padding-x = 10
-window-padding-y = 10
+window-padding-x = 0
+window-padding-y = 0
 window-decoration = auto
 macos-titlebar-style = transparent
 
@@ -23,6 +23,7 @@ macos-titlebar-style = transparent
 # ============================================================
 cursor-style = block
 cursor-style-blink = true
+cursor-color = #00ff00
 
 # ============================================================
 # 滚动
@@ -53,7 +54,7 @@ keybind = cmd+5=goto_tab:5
 # 剪贴板
 # ============================================================
 copy-on-select = clipboard
-clipboard-paste-protection = false
+clipboard-paste-protection = true
 
 # ============================================================
 # macOS 专属

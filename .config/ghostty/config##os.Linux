@@ -10,7 +10,7 @@ font-thicken = true
 # ============================================================
 # 外观
 # ============================================================
-theme = Tokyo Night
+theme = TokyoNight Storm
 background-opacity = 0.92
 window-padding-x = 10
 window-padding-y = 10
@@ -21,6 +21,7 @@ window-decoration = auto
 # ============================================================
 cursor-style = block
 cursor-style-blink = true
+cursor-color = #00ff00
 
 # ============================================================
 # 滚动
