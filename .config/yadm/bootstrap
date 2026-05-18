@@ -182,6 +182,7 @@ TOOLS=(
     nodejs
     npm
     git-lfs
+    fastfetch
 )
 
 # Debian 特有的包名映射
@@ -203,6 +204,7 @@ DEBIAN_NAMES=(
     nodejs
     npm
     git-lfs
+    fastfetch
 )
 
 # Arch 特有的包名映射
@@ -224,6 +226,7 @@ ARCH_NAMES=(
     nodejs
     npm
     git-lfs
+    fastfetch
 )
 
 # macOS / Homebrew 包名映射
@@ -245,6 +248,7 @@ BREW_NAMES=(
     node
     node
     git-lfs
+    fastfetch
 )
 
 info "安装命令行工具..."
