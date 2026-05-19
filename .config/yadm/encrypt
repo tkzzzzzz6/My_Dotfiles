@@ -1,0 +1,12 @@
+# yadm encrypt 文件列表（匹配的文件会被加密到 archive）
+# 每行一个 glob 模式
+
+# SSH 密钥
+.ssh/id_ed25519
+.ssh/id_ed25519.pub
+
+# code-stats API token
+.config/code-stats/secrets.env
+
+# GitHub CLI 认证信息
+.config/gh/hosts.yml
