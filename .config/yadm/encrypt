@@ -10,3 +10,6 @@
 
 # GitHub CLI 认证信息
 .config/gh/hosts.yml
+
+# API Keys and secrets
+.config/secrets/*

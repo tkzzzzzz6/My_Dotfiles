@@ -182,7 +182,6 @@ TOOLS=(
     nodejs
     npm
     git-lfs
-    fastfetch
 )
 
 # Debian 特有的包名映射
@@ -204,7 +203,6 @@ DEBIAN_NAMES=(
     nodejs
     npm
     git-lfs
-    fastfetch
 )
 
 # Arch 特有的包名映射
@@ -226,7 +224,6 @@ ARCH_NAMES=(
     nodejs
     npm
     git-lfs
-    fastfetch
 )
 
 # macOS / Homebrew 包名映射
@@ -248,7 +245,6 @@ BREW_NAMES=(
     node
     node
     git-lfs
-    fastfetch
 )
 
 info "安装命令行工具..."
@@ -276,6 +272,27 @@ for i in "${!TOOLS[@]}"; do
         brew install "${BREW_NAMES[$i]}"
     fi
 done
+
+# ============================================================
+# 4.5 fastfetch（需要特殊处理）
+# ============================================================
+if ! is_installed fastfetch; then
+    if $IS_MACOS; then
+        brew install fastfetch
+    elif [ "$DISTRO" = "debian" ]; then
+        # Ubuntu 24.04 等旧版本 apt 源没有 fastfetch，用 x-cmd 安装
+        if ! is_installed x; then
+            eval "$(curl https://get.x-cmd.com)"
+        fi
+        x install fastfetch
+    elif [ "$DISTRO" = "arch" ]; then
+        yay -S --noconfirm fastfetch
+    elif [ "$DISTRO" = "fedora" ]; then
+        sudo dnf install -y fastfetch
+    fi
+else
+    info "fastfetch 已安装"
+fi
 
 # ============================================================
 # 5. Homebrew Cask（仅 macOS）
@@ -392,6 +409,17 @@ if is_installed gh; then
     else
         info "GitHub CLI 已登录"
     fi
+fi
+
+# ============================================================
+# 13. 终端美化 Starship 安装和配置
+# ============================================================
+if ! is_installed starship; then
+    echo "安装 Starship（跨平台的 Shell 提示符）..."
+    x install starship
+    x starship
+else
+    echo "Starship 已安装"
 fi
 
 # ============================================================
