@@ -53,10 +53,8 @@ DISABLE_UNTRACKED_FILES_DIRTY="true"
 # Would you like to use another custom folder than $ZSH/custom?
 # ZSH_CUSTOM=/path/to/new-custom-folder
 
-# code:stats
-export CODESTATS_API_KEY="SFMyNTY.ZEd0NmVucDZlbm8yIyNNalkwT1RJPQ.MIWof7F1AjGS5ccTid2hwWzwJmw5nR-TtbE3fFPifu4"
-export CODESTATS_MACHINE="tk3"
-export CODESTATS_PULSE_INTERVAL="30"
+# API Keys (encrypted by yadm)
+[ -f ~/.config/secrets/env.sh ] && source ~/.config/secrets/env.sh
 
 # Which plugins would you like to load?
 # Standard plugins can be found in $ZSH/plugins/
@@ -103,9 +101,6 @@ unset __conda_setup
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-#claude code
-export ANTHROPIC_AUTH_TOKEN=sk-cSVAF0BFLF4yRqanqJUKwCJAyAGYCOx377RgHTPVgJ5rr8tY
-export ANTHROPIC_BASE_URL=https://anyrouter.top
 
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 # Compilation flags
@@ -138,24 +133,12 @@ export HOMEBREW_CORE_GIT_REMOTE=https://mirrors.aliyun.com/homebrew/homebrew-cor
 export HOMEBREW_CASK_GIT_REMOTE=https://mirrors.aliyun.com/homebrew/homebrew-cask.git
 
 
-export CODE_STATS_API_TOKEN="SFMyNTY.ZEd0NmVucDZlbm8yIyNNalkwT1RJPQ.MIWof7F1AjGS5ccTid2hwWzwJmw5nR-TtbE3fFPifu4"
 
 # OpenClaw Completion
 source "/Users/mac/.openclaw/completions/openclaw.zsh"
 
 # opencode
 export PATH=/Users/mac/.opencode/bin:$PATH
-# 火山方舟Coding Plan接口地址（Claude Code用这个，不要加/v3）
-export ANTHROPIC_BASE_URL="https://ark.cn-beijing.volces.com/api/coding"
-# 替换为你自己的API Key
-export ANTHROPIC_AUTH_TOKEN="dddc1066-9266-49d3-8dcb-298e15eb69f4"
-# 推荐填ark-code-latest，可自动适配方舟最新模型，无需本地修改配置
-# 如果要固定用豆包预览版，也可以填doubao-seed-code-preview-latest
-export ANTHROPIC_MODEL="ark-code-latest"
-# 禁用非必要流量，避免连接Anthropic官方地址报错
-export CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC="1"
-# 避免和本地Anthropic配置冲突
-export ANTHROPIC_API_KEY=""
 
 # filemanager yazi configuration
 function yy() {
