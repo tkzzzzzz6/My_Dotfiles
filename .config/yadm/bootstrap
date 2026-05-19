@@ -317,9 +317,29 @@ fi
 # ============================================================
 # 6. Oh My Zsh
 # ============================================================
+GH_MIRROR="https://gh-proxy.com"
+
+git_clone_with_fallback() {
+    local repo_url="$1"
+    local target_dir="$2"
+    local mirror_url="${GH_MIRROR}/${repo_url}"
+    if git clone "$repo_url" "$target_dir" 2>/dev/null; then
+        return 0
+    else
+        warn "GitHub 直连失败，切换镜像源..."
+        git clone "$mirror_url" "$target_dir"
+    fi
+}
+
 if [ ! -d "$HOME/.oh-my-zsh" ]; then
     info "安装 Oh My Zsh..."
-    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+    if curl -fsSL --connect-timeout 5 https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh -o /tmp/omz-install.sh 2>/dev/null; then
+        sh /tmp/omz-install.sh "" --unattended
+    else
+        warn "GitHub 直连失败，切换镜像源..."
+        sh -c "$(curl -fsSL ${GH_MIRROR}/https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+    fi
+    rm -f /tmp/omz-install.sh
 else
     info "Oh My Zsh 已安装"
 fi
@@ -328,12 +348,12 @@ ZSH_CUSTOM="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"
 
 if [ ! -d "$ZSH_CUSTOM/plugins/zsh-autosuggestions" ]; then
     info "安装 zsh-autosuggestions..."
-    git clone https://github.com/zsh-users/zsh-autosuggestions "$ZSH_CUSTOM/plugins/zsh-autosuggestions"
+    git_clone_with_fallback "https://github.com/zsh-users/zsh-autosuggestions.git" "$ZSH_CUSTOM/plugins/zsh-autosuggestions"
 fi
 
 if [ ! -d "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting" ]; then
     info "安装 zsh-syntax-highlighting..."
-    git clone https://github.com/zsh-users/zsh-syntax-highlighting "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting"
+    git_clone_with_fallback "https://github.com/zsh-users/zsh-syntax-highlighting.git" "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting"
 fi
 
 # ============================================================
