@@ -337,6 +337,27 @@ if [ ! -d "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting" ]; then
 fi
 
 # ============================================================
+# 6.5 切换默认 Shell 为 Zsh
+# ============================================================
+if is_installed zsh; then
+    ZSH_PATH="$(command -v zsh)"
+    CURRENT_SHELL="$(basename "$SHELL")"
+    if [ "$CURRENT_SHELL" != "zsh" ]; then
+        if grep -q "$ZSH_PATH" /etc/shells 2>/dev/null; then
+            info "切换默认 shell 为 zsh..."
+            chsh -s "$ZSH_PATH"
+            info "默认 shell 已切换为 zsh（重新登录后生效）"
+        else
+            warn "zsh 不在 /etc/shells 中，请手动添加："
+            echo "  echo '$ZSH_PATH' | sudo tee -a /etc/shells"
+            echo "  chsh -s $ZSH_PATH"
+        fi
+    else
+        info "默认 shell 已经是 zsh"
+    fi
+fi
+
+# ============================================================
 # 7. Python 工具链（uv）
 # ============================================================
 if ! is_installed uv; then
