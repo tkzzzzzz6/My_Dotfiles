@@ -13,3 +13,6 @@
 
 # API Keys and secrets
 .config/secrets/*
+
+# OpenCode config (contains API keys)
+.config/opencode/opencode.json
